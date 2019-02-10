@@ -1,0 +1,264 @@
+{
+  "configuration": {
+    "status": "error",
+    "name": "RoutingTest",
+    "packages": "com.pavlyshyn",
+    "ThresholdFilter": {
+      "level": "trace"
+    },
+    "properties": {
+      "property": [{
+        "name": "log-path",
+        "value": "logs"
+      },
+        {
+          "name": "archive",
+          "value": "${log-path}/archive"
+        }]
+    },
+    "appenders": {
+      "appender": [
+        {
+          "type": "Console",
+          "name": "task1_1",
+          "PatternLayout": {
+            "pattern": "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %class{1}:%L - %msg %xEx{short}%n"
+          }
+        },
+        {
+          "type": "File",
+          "name": "task1_2",
+          "fileName": "logs/rootFile.log",
+          "PatternLayout": {
+            "pattern": "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %class{1}:%L - %msg %xEx{short}%n"
+          },
+          "ThresholdFilter": {
+            "level": "all"
+          }
+        },
+        {
+          "type": "Console",
+          "name": "task2_1",
+          "PatternLayout": {
+            "pattern": "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %xEx{short} %class{1}:%L - %msg %n"
+          },
+          "ThresholdFilter": {
+            "level": "debug"
+          }
+        },
+        {
+          "type": "Console",
+          "name": "task2_2",
+          "PatternLayout": {
+            "pattern": "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %class{1}:%L - %msg %xEx{short}%n"
+          },
+          "ThresholdFilter": {
+            "level": "info"
+          }
+        },
+        {
+          "type": "File",
+          "name": "task3_1",
+          "fileName": "logs/task3_1.log",
+          "PatternLayout": {
+            "pattern": "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %class{1}:%L - %msg %xEx{short}%n"
+          },
+          "ThresholdFilter": {
+            "level": "all"
+          }
+        },
+        {
+          "type": "RollingFile",
+          "name": "task3_2",
+          "fileName": "logs/task3_2.log",
+          "filePattern":"logs/archive/task3_2_old.log",
+          "PatternLayout": {
+            "pattern": "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
+          },
+          "CronTriggeringPolicy":{
+            "schedule": "0 15 10 ? * *",
+            "evaluateOnStartup": "true"
+          }
+
+        },
+        {
+          "type": "RollingFile",
+          "name": "task3_3",
+          "fileName": "logs/task3_3.log",
+          "filePattern":"logs/archive/task3_3-%d{yyyy-MM-dd}.gz",
+          "PatternLayout": {
+            "pattern": "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
+          },
+          "ThresholdFilter": {
+            "level": "all"
+          },
+          "Policies": {
+            "SizeBasedTriggeringPolicy": {
+              "size": "1 MB"
+            }
+          }
+        },
+        {
+          "type": "RollingFile",
+          "name": "task3_4",
+          "fileName": "logs/task3_4.log",
+          "filePattern":"logs/archive/task3_4-%d{yyyy-MM-dd}.gz",
+          "PatternLayout": {
+            "pattern": "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
+          },
+          "ThresholdFilter": {
+            "level": "all"
+          },
+          "Policies": {
+            "TimeBasedTriggeringPolicy": {
+              "interval": "1",
+              "modulate": "true"
+            }
+          }
+        },
+        {
+          "type": "File",
+          "name": "task4",
+          "fileName": "logs/task4.log",
+          "PatternLayout": {
+            "pattern": "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %class{1}:%L - %msg %xEx{short}%n"
+          },
+          "ThresholdFilter": {
+            "level": "WARN",
+            "onMatch": "DENY",
+            "onMismatch": "NEUTRAL"
+          }
+        },
+        {
+          "type": "File",
+          "name": "task5_1",
+          "fileName": "logs/task5.log",
+          "PatternLayout": {
+            "pattern": "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %class{1}:%L - %msg %xEx{short}%n"
+          },
+          "LevelRangeFilter": {
+            "minLevel": "warn",
+            "maxLevel": "warn",
+            "onMatch": "ACCEPT",
+            "onMismatch": "DENY"
+          }
+        },
+        {
+          "type": "Console",
+          "name": "task5_2",
+          "PatternLayout": {
+            "pattern": "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %xEx{short} %class{1}:%L - %msg %n"
+          },
+          "LevelRangeFilter": {
+            "minLevel": "info",
+            "maxLevel": "info",
+            "onMatch": "ACCEPT",
+            "onMismatch": "DENY"
+          }
+        },
+        {
+          "type": "smtp",
+          "name": "Mail",
+          "subject": "Error Log",
+          "to": "to@gmail.com",
+          "from": "from@gmail.com",
+          "smtpHost": "smtp.gmail.com",
+          "smtpPort": "465",
+          "smtpProtocol": "smtps",
+          "smtpUsername": "from@gmail.com",
+          "smtpPassword": "password",
+          "bufferSize": "512",
+          "ThresholdFilter": {
+            "level": "trace"
+          }
+        },
+        {
+          "type": "SMS",
+          "name": "SMSsender",
+          "PatternLayout": {
+            "Pattern":"[%-5level] %d{yyyy-MM-dd HH:mm:ss} - %msg %xEx{short}"
+          }
+        },
+        {
+          "type": "Async",
+          "name": "AsyncSMS",
+            "AppenderRef": {
+              "ref": "SMSsender"
+            }
+        }
+      ]
+    },
+    "loggers": {
+      "logger": [
+        {
+          "name": "com.pavlyshyn.task1",
+          "level": "all",
+          "additivity": "false",
+          "appender-ref": [
+            {"ref": "task1_1"},
+            {"ref": "task1_2"}
+          ]
+        },
+        {
+          "name": "com.pavlyshyn.task2",
+          "level": "all",
+          "additivity": "false",
+          "appender-ref": [
+            {"ref": "task2_1"},
+            {"ref": "task2_2"}
+          ]
+        },
+        {
+          "name": "com.pavlyshyn.task3",
+          "level": "all",
+          "additivity": "false",
+          "appender-ref": [
+            {"ref": "task3_1"},
+            {"ref": "task3_2"},
+            {"ref": "task3_3"},
+            {"ref": "task3_4"}
+          ]
+        },
+        {
+          "name": "com.pavlyshyn.task4",
+          "level": "all",
+          "additivity": "false",
+          "appender-ref": [
+            {"ref": "task4"}
+          ]
+        },
+        {
+          "name": "com.pavlyshyn.task5",
+          "level": "all",
+          "additivity": "false",
+          "appender-ref": [
+            {"ref": "task5_1"},
+            {"ref": "task5_2"}
+          ]
+        },
+        {
+          "name": "com.pavlyshyn.task6",
+          "level": "error",
+          "additivity": "false",
+          "appender-ref": [
+            {"ref": "Mail"}
+          ]
+        },
+        {
+          "name": "com.pavlyshyn.task7",
+          "level": "fatal",
+          "additivity": "false",
+          "appender-ref": [
+            {"ref": "AsyncSMS"}
+          ]
+        }
+      ],
+      "root": {
+        "level": "error",
+        "appender-ref": {
+          "ref": "task1_2"
+        }
+      }
+    }
+  }
+}
